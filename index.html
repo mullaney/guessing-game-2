@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Guessing Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Muli|Ranchers" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div id="background-image"></div>
+    <div id="main">
+      <h1>Guessing Game</h1>
+      <h2>Pick a number between 1 and 100!</h2>
+      <input id="player-input" type="text" name="guess" value="" maxlength="3" placeholder="#" autofocus>
+      <button id="submit">Go!</button>
+      <ul id="guesses">
+        <li id="guess-1" class="guess">-</li>
+        <li id="guess-2" class="guess">-</li>
+        <li id="guess-3" class="guess">-</li>
+        <li id="guess-4" class="guess">-</li>
+        <li id="guess-5" class="guess">-</li>
+      </ul>
+      <div class="buttons">
+          <button id="new-game">New Game</button>
+          <button id="hint">Hint</button>
+      </div>
+    </div>
+    <footer id="footer">
+      <img class="float-left" src="./img/fullstack.png" alt="Fullstack Academy">
+      <img class="float-right" src="./img/grace-hopper.png" alt="Grace Hopper Academy">
+      <div id="credit">Built by Kevin Kelly | Fork at <a href="https://github.com/mullaney/guessing-game" target="_blank">github</a></div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="./index.js" charset="utf-8"></script>
+  </body>
+</html>

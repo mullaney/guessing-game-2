@@ -1,0 +1,172 @@
+* {
+}
+
+body {
+  font-family: 'Muli', sans-serif;
+  font-size: 16px;
+}
+
+h1 {
+  font-family: 'Ranchers', sans-serif;
+  font-size: 3em;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 1em;
+}
+
+div#background-image {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  display: block;
+  background-image: url('./../img/question-marks.jpg');
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+
+  filter: blur(5px);
+  opacity: 0.3;
+}
+
+
+div#main {
+  z-index: 99;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 480px;
+  text-align: center;
+}
+
+:focus {
+  outline: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 90%;
+  margin: 10px auto;
+}
+
+li {
+  border: 1px solid black;
+  display: inline-block;
+  margin: 5px;
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  vertical-align: middle;
+  border-radius: 10px;
+  box-shadow: 2px 2px 3px #888888;
+  background-color: white;
+}
+
+
+#player-input {
+  position: relative;
+  margin: auto;
+  height: 120px;
+  width: 120px;
+  border-radius: 100%;
+  font-size: 3em;
+  text-align: center;
+  box-shadow: 2px 2px 3px #888888;
+  z-index: 1;
+}
+
+#submit {
+  position: absolute;
+  bottom: 138px;
+  left: calc(50% + 30px);
+  z-index: 100;
+  height: 70px;
+  width: 70px;
+  border-radius: 100%;
+  background: #50ab44;
+  color: white;
+  border-color: #50ab44;
+}
+
+button {
+  font-size: 0.8em;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background-color: whitesmoke;
+  box-shadow: 2px 2px 3px #888888;
+}
+
+#new-game {
+  background: #50ab44;
+  color: white;
+  border-color: #50ab44;
+}
+
+#hint {
+  background: #199eb1;
+  color: white;
+  border-color: #199eb1;
+}
+
+#footer {
+  display: none;
+}
+
+img.float-left, img.float-right {
+  width: 125px;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+#credit {
+  margin: 10px auto;
+}
+
+@media only screen and (min-width: 480px) {
+  h1 {
+    font-size: 4em;
+  }
+}
+@media only screen and (min-width: 750px) {
+
+  img.float-left, img.float-right {
+    width: 180px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  img.float-left {
+    display: inline;
+    float: left;
+  }
+
+  img.float-right {
+    display: inline;
+    float: right;
+  }
+
+  #footer {
+    display: block;
+    z-index: 199;
+    width: calc(100% - 30px);
+    margin: 0;
+    background-color: white;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 15px;
+    text-align: center;
+    font-size: 0.6em;
+    box-shadow: -3px 0 8px #888888;
+  }
+}
