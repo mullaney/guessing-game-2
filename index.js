@@ -19,7 +19,9 @@ const showAlert = (message, color) => {
 
 // globals
 let guesses = [];
-let secret = 0;
+let boxOfSecrets = {};
+let gameOver = false;
+let gameWon = false;
 const DEBUGGING = true;
 
 // log to console if in debug mode;
@@ -30,11 +32,30 @@ const debug = (message) => {
 }
 
 // setup new game
-const setupNewGame = () => {
-  guesses = [];
-  secret = Math.floor(Math.random() * 100) + 1;
-  showAlert("New game! Pick a number between 1 & 100!");
+const guessingGame = () => {
+  let secret = Math.floor(Math.random() * 100) + 1;
   debug(`Secret number: ${secret}`);
+  return {
+    checkGuess: function(guess) {
+      if (guess === secret) {
+        return 'correct';
+      } else if (Math.abs(guess - secret) < 5) {
+        return 'hot';
+      } else if (Math.abs(guess - secret) < 15) {
+        return 'warm';
+      } else {
+        return 'cold';
+      }
+    }
+  }
+}
+
+const setupNewGame = () => {
+  let guesses = [];
+  let boxOfSecrets = guessingGame();
+  let gameOver = false;
+  let gameWon = false;
+  showAlert("New game! Pick a number between 1 & 100!");
 }
 
 setupNewGame();
@@ -56,17 +77,27 @@ hint.addEventListener('click', () => {
 });
 
 // guess
-const guess = () => {
-  let playerGuess = Number(playerInput.value);
-  if (playerGuess) {
-
+const guess = (playerGuess) => {
+  debug(`Player guessed: ${playerGuess}`);
+  if (playerGuess.toString() === 'NaN') {
+    showAlert('That guess was not a number!', playerGuess);
+  } else if (playerGuess < 1 || playerGuess > 100) {
+    showAlert('Your guess must be between 1 and 100!');
   } else {
-    alert('That guess was not a number!', playerGuess);
+    let check = boxOfSecrets.checkGuess() {
+      if (check === 'correct') {
+        showAlert(`${playerGuess} is the right number! right!`);
+        gameOver = true;
+        gameWon = true;
+      } else if (check === 'hot') {
+        ;
+      }
+    }
   }
   playerInput.value = "";
   playerInput.focus();
 }
 
 submit.addEventListener('click', () => {
-  guess();
+  guess(playerInput.value);
 });
