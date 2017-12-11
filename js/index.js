@@ -1,102 +1,64 @@
-console.log("pick a number");
+const MAX_GUESSES = 5;
+const MIN_NUMBER = 1;
+const MAX_NUMBER = 100;
+let debugMode = false;
 
-// add buttons
-const submit = document.querySelector('#submit');
-const newGame = document.querySelector('#new-game');
-const hint = document.querySelector('#hint');
-const playerInput = document.querySelector('#player-input');
-const guessList = document.querySelector('#guesses');
-const alertMessage = document.querySelector('#alert-message');
+function debug(message) {
+  if (debugMode) { console.log(message); }
+}
 
-const showAlert = (message, color) => {
-  if (color) {
-    alertMessage.style.color = color;
+function generateWinningNumber(number) {
+  debug('generateWinningNumber > number: ' + number);
+  number = Number(number);
+  if (!Number.isNaN(number) && number >= MIN_NUMBER && number <= MAX_NUMBER) {
+    return number;
   } else {
-    alertMessage.style.color = 'black';
-  }
-  alertMessage.innerHTML = message;
-}
-
-// globals
-let guesses = [];
-let boxOfSecrets = {};
-let gameOver = false;
-let gameWon = false;
-const DEBUGGING = true;
-
-// log to console if in debug mode;
-const debug = (message) => {
-  if (DEBUGGING) {
-    console.log(message);
+    debug('use random');
+    return Math.floor(Math.random() * (MAX_NUMBER + 1 - MIN_NUMBER)) + MIN_NUMBER;
   }
 }
 
-// setup new game
-const guessingGame = () => {
-  let secret = Math.floor(Math.random() * 100) + 1;
-  debug(`Secret number: ${secret}`);
+function setUpGame(number) {
+
+  var winningNumber = generateWinningNumber(number);
   return {
+    guesses: [],
+    hintGiven: false,
     checkGuess: function(guess) {
-      if (guess === secret) {
-        return 'correct';
-      } else if (Math.abs(guess - secret) < 5) {
-        return 'hot';
-      } else if (Math.abs(guess - secret) < 15) {
-        return 'warm';
-      } else {
-        return 'cold';
+      guess = Number(guess);
+      if (!Number.isNaN(guess) && guess >= MIN_NUMBER && guess <= MAX_NUMBER && guess % 1 === 0 && this.guesses.length < MAX_GUESSES) {
+        this.guesses.push(guess);
       }
+      return (guess === winningNumber) ? true : false;
+    },
+    getGameStatus: function() {
+      if (this.guesses.indexOf(winningNumber) >= 0) {
+        return 'won';
+      } else if (this.guesses.length < 5) {
+        return 'playing';
+      } else {
+        return 'lost';
+      }
+    },
+    resetGame: function(number) {
+      debug('resetGame > number: ' + number)
+      winningNumber = generateWinningNumber(number);
+      this.guesses = [];
+    },
+    getHint: function() {
+      if (this.hintGiven) {
+        return "You already got a hint!";
+      } else {
+        this.hintGiven = true;
+        let divisors = [11, 7, 5, 3, 2];
+        let index = this.guesses.length;
+        return `If you divide the winning number by ${divisors[index]}, you get ${winningNumber % divisors[index]}.`;
+      }
+
     }
-  }
+  };
 }
 
-const setupNewGame = () => {
-  let guesses = [];
-  let boxOfSecrets = guessingGame();
-  let gameOver = false;
-  let gameWon = false;
-  showAlert("New game! Pick a number between 1 & 100!");
-}
+var game = setUpGame();
 
-setupNewGame();
-
-newGame.addEventListener('click', () => {
-  debug(`New Game!`);
-  setupNewGame();
-});
-
-
-// define hint
-const showHint = () => {
-  debug('hint');
-  alert(`Secret number: ${secret}`);
-}
-
-hint.addEventListener('click', () => {
-  showHint();
-});
-
-// guess
-const guess = (playerGuess) => {
-  debug(`Player guessed: ${playerGuess}`);
-  if (playerGuess.toString() === 'NaN') {
-    showAlert('That guess was not a number!', playerGuess);
-  } else if (playerGuess < 1 || playerGuess > 100) {
-    showAlert('Your guess must be between 1 and 100!');
-  } else {
-    let check = boxOfSecrets.checkGuess()
-    if (check === 'correct') {
-      showAlert(`${playerGuess} is the right number! right!`);
-      gameOver = true;
-      gameWon = true;
-    } else if (check === 'hot') {
-      ;
-    }
-  }
-  playerInput.value = "";
-  playerInput.focus();
-}
-
-submit.addEventListener('click', () => {
-  guess(playerInput.value);
-});
+game.resetGame(7);
