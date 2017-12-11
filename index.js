@@ -84,14 +84,13 @@ const guess = (playerGuess) => {
   } else if (playerGuess < 1 || playerGuess > 100) {
     showAlert('Your guess must be between 1 and 100!');
   } else {
-    let check = boxOfSecrets.checkGuess() {
-      if (check === 'correct') {
-        showAlert(`${playerGuess} is the right number! right!`);
-        gameOver = true;
-        gameWon = true;
-      } else if (check === 'hot') {
-        ;
-      }
+    let check = boxOfSecrets.checkGuess()
+    if (check === 'correct') {
+      showAlert(`${playerGuess} is the right number! right!`);
+      gameOver = true;
+      gameWon = true;
+    } else if (check === 'hot') {
+      ;
     }
   }
   playerInput.value = "";
