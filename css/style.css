@@ -13,7 +13,8 @@ h1 {
 }
 
 h2 {
-  font-size: 1em;
+  font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 div#background-image {
@@ -67,7 +68,9 @@ li {
   border-radius: 10px;
   box-shadow: 2px 2px 3px #888888;
   background-color: white;
+  font-size: 2em;
 }
+
 
 
 #player-input {
@@ -95,6 +98,10 @@ li {
   border-color: #50ab44;
 }
 
+.hidden {
+  display: none;
+}
+
 button {
   font-size: 0.8em;
   padding: 5px 8px;
@@ -103,10 +110,10 @@ button {
   box-shadow: 2px 2px 3px #888888;
 }
 
-#new-game {
-  background: #50ab44;
+#reset {
+  background: goldenrod;
   color: white;
-  border-color: #50ab44;
+  border-color: goldenrod;
 }
 
 #hint {

@@ -70,14 +70,22 @@ describe ('game factory function', function() {
       expect(game.getHint()).toBe('You already got a hint!');
     });
     it('should a give the answer of % 7 if there are no guesses yet', function() {
-      expect(game.getHint()).toBe('If you divide the winning number by 11, you get 4.');
+      expect(game.getHint()).toBe('If you divide the winning number by 11, you get 4 as the remainder.');
     });
     it('should a give the answer of % 2 if there are 4 guesses already', function() {
       game.checkGuess(3);
       game.checkGuess(99);
       game.checkGuess(8);
       game.checkGuess(7);
-      expect(game.getHint()).toBe('If you divide the winning number by 2, you get 0.');
+      expect(game.getHint()).toBe('If you divide the winning number by 2, you get 0 as the remainder.');
+    });
+    it('should not give a hint if the game is lost', function() {
+      game.checkGuess(3);
+      game.checkGuess(99);
+      game.checkGuess(8);
+      game.checkGuess(7);
+      game.checkGuess(44);
+      expect(game.getHint()).toBe('Game over, no more hints!');
     });
   });
   it('should have a function to reset game', function() {
@@ -108,6 +116,74 @@ describe ('game factory function', function() {
       game.checkGuess(77);
       game.checkGuess(54);
       expect(game.getGameStatus()).toBe('lost');
+    });
+  });
+  describe('higher or lower', function() {
+    it('should say whether the guess was too high or too low', function() {
+      game.checkGuess(9);
+      expect(game.highOrLow()).toBe('Too high! ');
+      game.checkGuess(99);
+      expect(game.highOrLow()).toBe('Too high! ');
+      game.checkGuess(3);
+      expect(game.highOrLow()).toBe('Too low! ');
+      game.checkGuess(1);
+      expect(game.highOrLow()).toBe('Too low! ');
+    });
+    it('should say return an error if no guesses have been made', function() {
+      expect(game.highOrLow()).toBe('No guesses yet! ');
+    });
+    it('should say if the number is the winning number', function() {
+      game.checkGuess(4);
+      expect(game.highOrLow()).toBe('Just right! ');
+    });
+  });
+  describe('hot or cold', function() {
+    it('should return an error if no guesses have been made', function() {
+      expect(game.hotOrCold()).not.toBe("But you're on fire!");
+      expect(game.hotOrCold()).not.toBe("But you're getting warm!");
+      expect(game.hotOrCold()).not.toBe("And you are kinda chilly.");
+      expect(game.hotOrCold()).not.toBe("And you are ice cold");
+      expect(game.hotOrCold()).toBe("Really, no guesses yet!");
+    });
+    it('should return "on fire" if the guess is within 7', function() {
+      game.checkGuess(5);
+      expect(game.hotOrCold()).toBe("But you're on fire!");
+      game.checkGuess(1);
+      expect(game.hotOrCold()).toBe("But you're on fire!");
+      game.checkGuess(11);
+      expect(game.hotOrCold()).toBe("But you're on fire!");
+      game.checkGuess(12);
+      expect(game.hotOrCold()).not.toBe("But you're on fire!");
+    });
+    it('should return "getting warm" if the guess is within 15', function() {
+      game.checkGuess(12);
+      expect(game.hotOrCold()).toBe("But you're getting warm!");
+      game.checkGuess(16);
+      expect(game.hotOrCold()).toBe("But you're getting warm!");
+      game.checkGuess(19);
+      expect(game.hotOrCold()).toBe("But you're getting warm!");
+      game.checkGuess(20);
+      expect(game.hotOrCold()).not.toBe("But you're getting warm!");
+    });
+    it('should return "kinda chilly" if the guess is within 30', function() {
+      game.checkGuess(20);
+      expect(game.hotOrCold()).toBe("And you are kinda chilly.");
+      game.checkGuess(23);
+      expect(game.hotOrCold()).toBe("And you are kinda chilly.");
+      game.checkGuess(34);
+      expect(game.hotOrCold()).toBe("And you are kinda chilly.");
+      game.checkGuess(35);
+      expect(game.hotOrCold()).not.toBe("And you are kinda chilly.");
+    });
+    it('should return "ice cold" if the guess is more than 30 away', function() {
+      game.checkGuess(100);
+      expect(game.hotOrCold()).toBe("And you are ice cold.");
+      game.checkGuess(77);
+      expect(game.hotOrCold()).toBe("And you are ice cold.");
+      game.checkGuess(45);
+      expect(game.hotOrCold()).toBe("And you are ice cold.");
+      game.checkGuess(34);
+      expect(game.hotOrCold()).not.toBe("And you are ice cold.");
     });
   });
 });
