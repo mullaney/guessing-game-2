@@ -105,7 +105,14 @@ function setUpGame(number) {
 
 var submitButton = document.querySelector('button#submit');
 var playerInput  = document.querySelector('input#player-input');
-var guessList    = document.querySelector('ul#guesses');
+var guessList    = document.querySelector('div#guesses');
+var guessDivs   = [
+  document.querySelector('div#guess0'),
+  document.querySelector('div#guess1'),
+  document.querySelector('div#guess2'),
+  document.querySelector('div#guess3'),
+  document.querySelector('div#guess4')
+]
 var alertMessage = document.querySelector('h2#alert-message');
 var resetButton  = document.querySelector('button#reset');
 var hintButton   = document.querySelector('button#hint');
@@ -122,9 +129,9 @@ var showAlert = function (message, color) {
 var showGuesses = function() {
   for (var i = 0; i < 5; i++) {
     if (game.guesses[i]) {
-      guessList.children[i].innerHTML = game.guesses[i];
+      guessDivs[i].innerHTML = game.guesses[i];
     } else {
-      guessList.children[i].innerHTML = "-";
+      guessDivs[i].innerHTML = "?";
     }
   }
 }
@@ -158,7 +165,9 @@ submitButton.addEventListener('click', function() {
         submitButton.classList.add('hidden');
         showAlert('I\'m sorry. You lost. Hit reset to play again!');
       } else {
-        showAlert(game.highOrLow() + game.hotOrCold());
+        var hint = game.highOrLow() + game.hotOrCold();
+        showAlert(hint);
+        guessDivs[game.guesses.length-1].setAttribute("data-info", hint);
         playerInput.value = "";
         playerInput.focus();
       }

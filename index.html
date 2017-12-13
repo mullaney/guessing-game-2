@@ -14,13 +14,13 @@
       <h2 id="alert-message">No JavaScript</h2>
       <input id="player-input" type="text" name="guess" value="" maxlength="3" placeholder="#" autofocus>
       <button id="submit">Go!</button>
-      <ul id="guesses">
-        <li id="guess-1" class="guess">-</li>
-        <li id="guess-2" class="guess">-</li>
-        <li id="guess-3" class="guess">-</li>
-        <li id="guess-4" class="guess">-</li>
-        <li id="guess-5" class="guess">-</li>
-      </ul>
+      <div id="guesses">
+        <div id="guess0" data-info="Type your guess into the circle above" class="guess"></div>
+        <div id="guess1" data-info="Type your guess into the circle above" class="guess"></div>
+        <div id="guess2" data-info="Type your guess into the circle above" class="guess"></div>
+        <div id="guess3" data-info="Type your guess into the circle above" class="guess"></div>
+        <div id="guess4" data-info="Type your guess into the circle above" class="guess"></div>
+      </div>
       <div class="buttons">
           <button id="reset">Reset</button>
           <button id="hint">Hint</button>
@@ -29,7 +29,7 @@
     <footer id="footer">
       <img class="float-left" src="./img/fullstack.png" alt="Fullstack Academy">
       <img class="float-right" src="./img/grace-hopper.png" alt="Grace Hopper Academy">
-      <div id="credit">Built by Kevin Kelly | Fork at <a href="https://github.com/mullaney/guessing-game" target="_blank">github</a></div>
+      <div id="credit">Built by Kevin Kelly | Fork at <a href="https://github.com/mullaney/guessing-game-2" target="_blank">github</a></div>
     </footer>
     <script src="./js/index.js" charset="utf-8"></script>
   </body>
