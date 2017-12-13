@@ -19,9 +19,39 @@ describe ('game factory function', function() {
   it('should return an object', function() {
     expect(typeof game).toBe('object');
   });
-  it('should have a checkGuess function', function() {
-    expect(game.checkGuess(4)).toBe(true);
-    expect(game.checkGuess(5)).toBe(false);
+  describe('checkGuess function', function() {
+    it('should accept numbers between MIN_NUMBER and MAX_NUMBER', function() {
+      expect(game.checkGuess(MIN_NUMBER)).toBe(false);
+      expect(game.checkGuess(MAX_NUMBER)).toBe(false);
+      expect(game.checkGuess(4)).toBe(true);
+      expect(game.checkGuess(5)).toBe(false);
+    });
+    it('should throw an error if number is outside of range', function() {
+      expect(function () {
+        game.checkGuess(MIN_NUMBER-1);
+      }).toThrow(new Error('Your guess is lower than the minimum guess'));
+      expect(function () {
+        game.checkGuess(MAX_NUMBER+1);
+      }).toThrow(new Error('Your guess is higher than the maximum guess'));
+    });
+    it('should throw an error if the number is not a whole number', function() {
+      expect(function() {
+        game.checkGuess(4.5);
+      }).toThrow(new Error('Your guess must be a whole number'));
+    });
+    it('should throw an error if the guess in NaN', function() {
+      expect(function() {
+        game.checkGuess(NaN);
+      }).toThrow(new Error('That guess is not a number'));
+    });
+    it('should throw an error if it\'s the guess is blank', function() {
+      expect(function() {
+        game.checkGuess("");
+      }).toThrow(new Error('To guess, type a number in the circle below'));
+      // expect(function() {
+      //   game.checkGuess("   ");
+      // }).toThrow(new Error('To guess, type a number in the circle below'));
+    });
   });
   describe('guesses array', function() {
     it('should have a list of past guesses', function() {
@@ -44,16 +74,6 @@ describe ('game factory function', function() {
       expect(game.guesses.length).toBe(5);
       expect(game.guesses[4]).toBe(87);
     });
-    it('should not save strings or other non numbers to guesses array', function() {
-      game.checkGuess(NaN);
-      game.checkGuess("a number");
-      expect(game.guesses.length).toBe(0);
-    });
-    it('should reject numbers that are above 100 or below 1', function() {
-      game.checkGuess(0);
-      game.checkGuess(101);
-      expect(game.guesses.length).toBe(0);
-    });
   });
   describe('hints', function() {
     it('should know if a hint has been given', function() {
@@ -69,6 +89,14 @@ describe ('game factory function', function() {
       game.checkGuess(5);
       expect(game.getHint()).toBe('You already got a hint!');
     });
+    it('should tell you the answer if the game is lost', function() {
+      game.checkGuess(6);
+      game.checkGuess(7);
+      game.checkGuess(8);
+      game.checkGuess(9);
+      game.checkGuess(10);
+      expect(game.getHint()).toBe('The answer was 4');
+    });
     it('should a give the answer of % 7 if there are no guesses yet', function() {
       expect(game.getHint()).toBe('If you divide the winning number by 11, you get 4 as the remainder.');
     });
@@ -79,13 +107,9 @@ describe ('game factory function', function() {
       game.checkGuess(7);
       expect(game.getHint()).toBe('If you divide the winning number by 2, you get 0 as the remainder.');
     });
-    it('should not give a hint if the game is lost', function() {
-      game.checkGuess(3);
-      game.checkGuess(99);
-      game.checkGuess(8);
-      game.checkGuess(7);
-      game.checkGuess(44);
-      expect(game.getHint()).toBe('Game over, no more hints!');
+    it('should not give a hint if the game is won', function() {
+      game.checkGuess(4);
+      expect(game.getHint()).toBe('I\'ll give you a hint. Maybe you should press the reset button!');
     });
   });
   it('should have a function to reset game', function() {
@@ -186,6 +210,12 @@ describe ('game factory function', function() {
       expect(game.hotOrCold()).not.toBe("And you are ice cold.");
     });
   });
+});
+
+describe('submitGuess function', function() {
+  it('should call the showAlert', function() {
+    //
+  })
 });
 
 describe('debug function', function() {

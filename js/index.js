@@ -25,8 +25,20 @@ function setUpGame(number) {
     guesses: [],
     hintGiven: false,
     checkGuess: function(guess) {
+      if (typeof guess === 'string' && guess.trim() === "") {
+        throw new Error("To guess, type a number in the circle below");
+      }
       guess = Number(guess);
-      if (!Number.isNaN(guess) && guess >= MIN_NUMBER && guess <= MAX_NUMBER && guess % 1 === 0 && this.guesses.length < MAX_GUESSES) {
+      if (guess < MIN_NUMBER) {
+        throw new Error("Your guess is lower than the minimum guess");
+      } else if (guess > MAX_NUMBER) {
+        throw new Error("Your guess is higher than the maximum guess");
+      } else if (Number.isNaN(guess)) {
+        throw new Error("That guess is not a number");
+      } else if (guess % 1 !== 0) {
+        throw new Error("Your guess must be a whole number");
+      }
+      if (this.guesses.length < MAX_GUESSES) {
         this.guesses.push(guess);
       }
       return (guess === winningNumber) ? true : false;
@@ -49,8 +61,10 @@ function setUpGame(number) {
     getHint: function() {
       if (this.hintGiven) {
         return "You already got a hint!";
+      } else if (this.getGameStatus() === 'won') {
+        return "I\'ll give you a hint. Maybe you should press the reset button!";
       } else if (this.getGameStatus() === 'lost') {
-        return "Game over, no more hints!"
+        return "The answer was " + winningNumber;
       } else {
         this.hintGiven = true;
         let divisors = [11, 7, 5, 3, 2];
@@ -128,25 +142,33 @@ var gameInit = function() {
 
 gameInit();
 
-
 submitButton.addEventListener('click', function() {
   if (game.getGameStatus() === 'playing') {
-    if (game.checkGuess(playerInput.value)) {
-      showAlert('Congratulations! You won. The answer was: ' + playerInput.value);
-      playerInput.readonly = true;
-      playerInput.value = '🤪';
-      submitButton.classList.add('hidden');
-    } else if (game.guesses.length === 5) {
-      playerInput.readonly = true;
-      playerInput.value = '😢';
-      submitButton.classList.add('hidden');
-      showAlert('I\'m sorry. You lost. Hit reset to play again!');
-    } else {
-      showAlert(game.highOrLow() + game.hotOrCold());
+    try {
+      debug('trying guess');
+      var isValid = game.checkGuess(playerInput.value);
+      if (isValid) {
+        showAlert('Congratulations! You won. The answer was: ' + playerInput.value);
+        playerInput.readonly = true;
+        playerInput.value = '🤪';
+        submitButton.classList.add('hidden');
+      } else if (game.guesses.length === 5) {
+        playerInput.readonly = true;
+        playerInput.value = '😢';
+        submitButton.classList.add('hidden');
+        showAlert('I\'m sorry. You lost. Hit reset to play again!');
+      } else {
+        showAlert(game.highOrLow() + game.hotOrCold());
+        playerInput.value = "";
+        playerInput.focus();
+      }
+      showGuesses();
+    } catch(err) {
+      debug(err);
+      showAlert(err.toString().slice(7), 'red');
       playerInput.value = "";
       playerInput.focus();
     }
-    showGuesses();
   }
 });
 
