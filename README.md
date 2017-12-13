@@ -1,7 +1,5 @@
-Start dev server by typing
+# Guessing Game project
 
-parcel index.html
+Pick a number between 1 and 100! You've got 5 guesses to guess the correct answer.
 
-Make sure to have parceljs installed:
-
-https://parceljs.org/getting_started.html
+Try it out at (kvinklly.com)[http://kvinklly.com/gg/]
