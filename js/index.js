@@ -159,11 +159,13 @@ submitButton.addEventListener('click', function() {
         playerInput.readonly = true;
         playerInput.value = '🤪';
         submitButton.classList.add('hidden');
+        guessDivs[game.guesses.length-1].setAttribute("data-info", "You got it!");
       } else if (game.guesses.length === 5) {
         playerInput.readonly = true;
         playerInput.value = '😢';
         submitButton.classList.add('hidden');
         showAlert('I\'m sorry. You lost. Hit reset to play again!');
+        guessDivs[game.guesses.length-1].setAttribute("data-info", "That was your last guess.");
       } else {
         var hint = game.highOrLow() + game.hotOrCold();
         showAlert(hint);
