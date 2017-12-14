@@ -25,23 +25,23 @@ function setUpGame(number) {
     guesses: [],
     hintGiven: false,
     checkGuess: function(guess) {
-      if (typeof guess === 'string' && guess.trim() === "") {
-        throw new Error("To guess, type a number in the circle below");
+      if (typeof guess === 'string' && guess.trim() === '') {
+        throw new Error('To guess, type a number in the circle below');
       }
       guess = Number(guess);
       if (guess < MIN_NUMBER) {
-        throw new Error("Your guess is lower than the minimum guess");
+        throw new Error('Your guess is lower than the minimum guess');
       } else if (guess > MAX_NUMBER) {
-        throw new Error("Your guess is higher than the maximum guess");
+        throw new Error('Your guess is higher than the maximum guess');
       } else if (Number.isNaN(guess)) {
-        throw new Error("That guess is not a number");
+        throw new Error('That guess is not a number');
       } else if (guess % 1 !== 0) {
-        throw new Error("Your guess must be a whole number");
+        throw new Error('Your guess must be a whole number');
       }
       if (this.guesses.length < MAX_GUESSES) {
         this.guesses.push(guess);
       }
-      return (guess === winningNumber) ? true : false;
+      return (guess === winningNumber);
     },
     getGameStatus: function() {
       if (this.guesses.indexOf(winningNumber) >= 0) {
@@ -52,19 +52,19 @@ function setUpGame(number) {
         return 'lost';
       }
     },
-    resetGame: function(number) {
-      debug('resetGame > number: ' + number)
-      winningNumber = generateWinningNumber(number);
+    resetGame: function(num) {
+      debug('resetGame > number: ' + num)
+      winningNumber = generateWinningNumber(num);
       this.guesses = [];
       this.hintGiven = false;
     },
     getHint: function() {
       if (this.hintGiven) {
-        return "You already got a hint!";
+        return 'You already got a hint!';
       } else if (this.getGameStatus() === 'won') {
-        return "I\'ll give you a hint. Maybe you should press the reset button!";
+        return "I'll give you a hint. Maybe you should press the reset button!";
       } else if (this.getGameStatus() === 'lost') {
-        return "The answer was " + winningNumber;
+        return 'The answer was ' + winningNumber;
       } else {
         this.hintGiven = true;
         let divisors = [11, 7, 5, 3, 2];
@@ -105,7 +105,6 @@ function setUpGame(number) {
 
 var submitButton = document.querySelector('button#submit');
 var playerInput  = document.querySelector('input#player-input');
-var guessList    = document.querySelector('div#guesses');
 var guessDivs   = [
   document.querySelector('div#guess0'),
   document.querySelector('div#guess1'),
@@ -126,22 +125,22 @@ var showAlert = function (message, color) {
   alertMessage.innerHTML = message;
 }
 
+var game = {};
+
 var showGuesses = function() {
   for (var i = 0; i < 5; i++) {
     if (game.guesses[i]) {
       guessDivs[i].innerHTML = game.guesses[i];
     } else {
-      guessDivs[i].innerHTML = "?";
+      guessDivs[i].innerHTML = '?';
     }
   }
 }
 
-var game = {};
-
 var gameInit = function() {
   showAlert(`Pick a number between ${MIN_NUMBER} and ${MAX_NUMBER}`, 'black');
   game = setUpGame();
-  playerInput.value = "";
+  playerInput.value = '';
   playerInput.focus();
   showGuesses();
   submitButton.classList.remove('hidden');
@@ -159,25 +158,25 @@ submitButton.addEventListener('click', function() {
         playerInput.readonly = true;
         playerInput.value = '🤪';
         submitButton.classList.add('hidden');
-        guessDivs[game.guesses.length-1].setAttribute("data-info", "You got it!");
+        guessDivs[game.guesses.length - 1].setAttribute('data-info', 'You got it!');
       } else if (game.guesses.length === 5) {
         playerInput.readonly = true;
         playerInput.value = '😢';
         submitButton.classList.add('hidden');
         showAlert('I\'m sorry. You lost. Hit reset to play again!');
-        guessDivs[game.guesses.length-1].setAttribute("data-info", "That was your last guess.");
+        guessDivs[game.guesses.length - 1].setAttribute('data-info', 'That was your last guess.');
       } else {
         var hint = game.highOrLow() + game.hotOrCold();
         showAlert(hint);
-        guessDivs[game.guesses.length-1].setAttribute("data-info", hint);
-        playerInput.value = "";
+        guessDivs[game.guesses.length - 1].setAttribute('data-info', hint);
+        playerInput.value = '';
         playerInput.focus();
       }
       showGuesses();
-    } catch(err) {
+    } catch (err) {
       debug(err);
       showAlert(err.toString().slice(7), 'red');
-      playerInput.value = "";
+      playerInput.value = '';
       playerInput.focus();
     }
   }
