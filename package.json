@@ -1,12 +1,23 @@
 {
-  "name": "gg",
+  "name": "Guessing Game",
   "version": "1.0.0",
-  "description": "",
+  "description": "Pick a number between 1 and 100! You've got 5 guesses to guess the correct answer.",
   "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint-config-fullstack": "^3.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mullaney/guessing-game-2.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mullaney/guessing-game-2/issues"
+  },
+  "homepage": "https://github.com/mullaney/guessing-game-2#readme"
 }
