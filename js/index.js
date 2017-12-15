@@ -137,13 +137,29 @@ var showGuesses = function() {
   }
 }
 
+var disableInput = function() {
+  playerInput.readonly = true;
+  submitButton.classList.add('hidden');
+}
+
+var enableInput = function() {
+  submitButton.classList.remove('hidden');
+  playerInput.value = '';
+  playerInput.focus();
+}
+
+var clearHints = function() {
+  for (var i = 0; i < guessDivs.length; i++) {
+    guessDivs[i].setAttribute('data-info', 'Use circle above to enter guesses');
+  }
+}
+
 var gameInit = function() {
   showAlert(`Pick a number between ${MIN_NUMBER} and ${MAX_NUMBER}`, 'black');
   game = setUpGame();
-  playerInput.value = '';
-  playerInput.focus();
+  enableInput();
   showGuesses();
-  submitButton.classList.remove('hidden');
+  clearHints();
 }
 
 gameInit();
@@ -154,30 +170,26 @@ submitButton.addEventListener('click', function() {
       debug('trying guess');
       var isValid = game.checkGuess(playerInput.value);
       if (isValid) {
+        disableInput();
         showAlert('Congratulations! You won. The answer was: ' + playerInput.value);
-        playerInput.readonly = true;
         playerInput.value = '🤪';
-        submitButton.classList.add('hidden');
         guessDivs[game.guesses.length - 1].setAttribute('data-info', 'You got it!');
       } else if (game.guesses.length === 5) {
-        playerInput.readonly = true;
+        disableInput();
         playerInput.value = '😢';
-        submitButton.classList.add('hidden');
         showAlert('I\'m sorry. You lost. Hit reset to play again!');
         guessDivs[game.guesses.length - 1].setAttribute('data-info', 'That was your last guess.');
       } else {
         var hint = game.highOrLow() + game.hotOrCold();
         showAlert(hint);
         guessDivs[game.guesses.length - 1].setAttribute('data-info', hint);
-        playerInput.value = '';
-        playerInput.focus();
+        enableInput();
       }
       showGuesses();
     } catch (err) {
       debug(err);
       showAlert(err.toString().slice(7), 'red');
-      playerInput.value = '';
-      playerInput.focus();
+      enableInput();
     }
   }
 });
